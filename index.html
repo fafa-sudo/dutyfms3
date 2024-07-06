@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duty Status</title>
+    <style>
+        /* Add your CSS styling here */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            border: 5px solid #FF69B4; /* Thick border */
+        }
+        .group-status {
+            background-color: #6633CC; /* Violet color */
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .off-duty {
+            background-color: #C6F47E; /* Green color */
+        }
+        .on-duty {
+            background-color: #FFFF99; /* Yellow color */
+        }
+        p {
+            background-color: #E6E6E6; /* Light gray color */
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        #result {
+            background-color: #ADD8E6; /* Blue color */
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            background-color: #6633CC; /* Violet color */
+            padding: 10px;
+            border-radius: 10px;
+        }
+        label {
+            background-color: #F7DC6F; /* Yellowish color */
+            padding: 10px;
+            border-radius: 10px;
+        }
+        input[type="text"] {
+            font-size: 24px;
+            font-weight: bold;
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
+        }
+        button[type="button"] {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #008000; /* Green color */
+            color: #FFFFFF; /* White color */
+            cursor: pointer;
+        }
+        button[type="button"]:hover {
+            background-color: #00FF00; /* Light green color */
+        }
+        
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border-spacing: 0;
+          table-layout: fixed;
+          word-wrap: break-word;
+        }
+        
+        th, td {
+          border-left: 1px solid gray;
+          border-top: 1px solid gray;
+          padding-left: 5px;
+          padding-top: 5px;
+          font-size: 16px;
+          text-align:left;
+          font-weight:normal;
+          overflow-wrap:normal
+        }
+        
+        th {
+          background-color:#E6E6E6; /* Light gray color */
+          font-weight:bold
+        }
+        
+        td {
+          background-color:#FFFFFF; /* White color */
+        }
+
+       .bold {
+  font-weight: bold;
+}
+    
+    </style>
+</head>
+
+<body>
+    <h1>Duty Status</h1>
+    
+    <label for="dateInput">Enter a date (MM/DD/YYYY):</label>
+    
+    <input type="text" id="dateInput" value=07/07/2024>
+    
+    <br><br>
+    
+    <button type="button" onclick="calculateDayOfWeek()">Calculate</button>
+    
+    <br><br>
+    
+    <p id="result"></p>
+
+    <script>
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                calculateDayOfWeek();
+            }
+        });
+        
+        function calculateDayOfWeek() {
+            const inputDate = document.getElementById("dateInput").value;
+            const parsedDate = new Date(inputDate);
+
+            if (!isNaN(parsedDate)) {
+                const currentDate = new Date();
+                const currentDay = currentDate.toLocaleDateString(undefined, { day: 'numeric' });
+                const currentMonth = currentDate.toLocaleDateString(undefined, { month: 'long' });
+                const currentYear = currentDate.getFullYear();
+                const currentDayOfWeek = currentDate.toLocaleDateString(undefined, { weekday: 'long' });
+                const dayOfWeek = parsedDate.toLocaleDateString(undefined, { weekday: 'long' });
+                const dutyStatus = getDutyStatus(parsedDate);
+
+               document.getElementById("result").innerHTML = `
+        <label style="background-color: #FFFF88;">Today's date is ${currentDay} ${currentMonth} ${currentYear}, On ${currentDayOfWeek}</label><br><br>
+                           <br><br>
+        <label style="background-color: #C6F47E;">This date ${parsedDate.toLocaleDateString()} is on ${dayOfWeek}</label><br><br>
+                        <br><br> 
+        <b><label style="background-color: #6688CC;">${dutyStatus}</label></b>
+                    <br><br> 
+                    
+                    <table>
+                      <tr>
+                        <th>TEAM A</th>
+                        <th>TEAM B</th>
+                        <th>TEAM C</th>
+                      </tr>
+                      <tr>
+                        <td class="bold">Team A Members:</td>
+                        <td class="bold">Team B Members:</td>
+                        <td class="bold">Team C Members:</td>
+                      </tr>
+                      
+      
+                      <tr>
+                        <td>1. G NANSASIRA</td>
+                        <td>1. J SAFARI</td>
+                        <td>1. A TURATSINZE</td>
+                      </tr>
+                      <tr>
+                        <td>2. R NSHIMIYIMANA</td>
+                        <td>2. E NDAGIJIMANA</td>
+                        <td>2. W NDAYISENGA</td>
+                      </tr>
+                      <tr>
+                        <td>3. FABIUS MSAIDIZI</td>
+                        <td>3. NKUBANA E</td>
+                        <td>3. C NTAGOZERA</td>
+                      </tr>
+                       <tr>
+                        <td>4. BYAGATONDA J</td>
+                        <td>4. MUTSINZI E</td>
+                        <td>4. HABIYAMBERE H</td>
+                      </tr>
+                       <tr>
+                        <td>5. KAYUMBA J</td>
+                        <td>5. NYIRAMAHIRWE A</td>
+                        <td>5. NSHIMIYIMANA D</td>
+                      </tr>
+                       <tr>
+                        <td>6. </td>
+                        <td>6. </td>
+                        <td>6. </td>
+                      </tr>
+                     
+                    </table>`;
+                
+            } else {
+                document.getElementById("result").innerHTML = "Invalid date.";
+            }
+        }
+
+     function getDutyStatus(date) {
+    const startDate = new Date('2024-07-06');
+    const inputDate = new Date(date);
+    const difference = inputDate.getTime() - startDate.getTime();
+    const daysDifference = Math.floor(difference / (1000 * 60 * 60 * 24));
+
+    if (daysDifference >= 0) {
+        const cycleLength = 3; // Number of days in the duty cycle
+        const dayIndex = daysDifference % cycleLength;
+
+      if (dayIndex === 0) {
+      return ` TEAM C : Off duty , TEAM A : On duty during the Day, TEAM B : On duty at Night. `;
+    } else if (dayIndex=== 1) {
+      return ` TEAM C : On duty during the Day, TEAM A : On duty at Night, TEAM B : Off duty.`;
+    } else if (dayIndex=== 2) {
+      return ` TEAM A : Off duty, TEAM B : On duty at Day, TEAM C : On duty at Night.`;
+    }
+    } else {
+      return "Invalid date.";
+    }
+}
+    
+    </script>
+
+</body>
+
+<html>
